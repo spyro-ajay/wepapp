@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>How to Create a Web App in Android Studio</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      color: #2c3e50;
+    }
+
+    p {
+      color: #555;
+      font-size: 17px;
+    }
+
+    pre {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📱 How to Create a Web App in Android Studio (WebView)</h1><script type="text/javascript">
+	atOptions = {
+		'key' : '056f6beaf41a2db78805f301a5336d3f',
+		'format' : 'iframe',
+		'height' : 250,
+		'width' : 300,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/056f6beaf41a2db78805f301a5336d3f/invoke.js"></script>
+
+    <p>This tutorial will guide you on how to convert a website into a working Android app using WebView in Android Studio. Below are the three main files you'll use.</p>
+
+    <h2>1️⃣ Layout File: <code>activity_main.xml</code></h2>
+    <p>Use this layout with a WebView and a ProgressBar:</p>
+
+<pre><code>&lt;RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"&gt;
+
+    &lt;WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" /&gt;
+
+    &lt;ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+
+    <h2>2️⃣ Manifest File: <code>AndroidManifest.xml</code></h2>
+    <p>This manifest includes internet permission and setup for launching the app:</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.mydasboard"&gt;
+
+    &lt;!-- ✅ Internet permission added  ony add this in your file not copy all the coode--&gt;
+    &lt;uses-permission android:name="android.permission.INTERNET" /&gt;
+
+    &lt;application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyDasboard"
+        tools:targetApi="31"&gt;
+
+        &lt;activity
+            android:name=".MainActivity"
+            android:exported="true"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN" /&gt;
+                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+</code></pre>
+
+    <h2>3️⃣ Java Code: <code>MainActivity.java</code></h2>
+    <p>Java code that loads the web page from <code>assets/index.html</code>:</p>
+
+<pre><code>package com.example.mydasboard;
+
+import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+
+    WebView webView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        webView = findViewById(R.id.webView);
+        webView.setWebViewClient(new WebViewClient()); // Load inside app
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true); // If your site needs JS
+
+        webView.loadUrl("file:///android_asset/index.html"); // Change to your site URL
+    }
+
+    // Optional: Handle back button to go back in WebView
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+}
+</code></pre>
+
+    <h2>✅ You're Done!</h2>
+    <p>Now just put your HTML file inside <code>assets/index.html</code> and run the app! Your full-screen web app will work inside Android Studio.</p>
+  </div>
+
+</body>
+</html>
